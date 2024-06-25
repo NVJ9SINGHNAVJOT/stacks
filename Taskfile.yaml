@@ -1,0 +1,16 @@
+---
+version: "3"
+
+dotenv:
+  - ".env"
+
+interval: 500ms
+
+vars:
+  PORT: $PORT
+
+tasks:
+  portainer:
+    desc: runs portainer container
+    cmds:
+      - cd portainer && docker compose up
