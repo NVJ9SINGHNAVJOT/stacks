@@ -1,3 +1,4 @@
 # environment
 *.env
+*.envrc
 !example.env
