@@ -14,3 +14,8 @@ tasks:
     desc: runs portainer container
     cmds:
       - cd portainer && docker compose up
+
+  ngnix:
+    desc: runs ngnix container
+    cmds:
+      - cd ngnix && docker compose up
