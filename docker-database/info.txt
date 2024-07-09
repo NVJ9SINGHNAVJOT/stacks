@@ -1,0 +1,3 @@
+# docker databases backup and restore
+- create 'workspace/backups' if not exists 
+- after backup do not change backup files or folder names
