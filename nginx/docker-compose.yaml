@@ -16,7 +16,7 @@ volumes:
 services:
   nginx:
     container_name: nginx
-    image: jc21/nginx-proxy-manager:github-pr-3581
+    image: jc21/nginx-proxy-manager:github-pr-3910
     restart: always
     ports:
       - '80:80'
