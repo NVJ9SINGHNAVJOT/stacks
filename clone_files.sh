@@ -8,7 +8,7 @@
 
 # Predefined variables
 REPO_URL="https://github.com/example/repo.git" # Specify your repository URL here
-DEST_DIR="/task_scripts"                         # Specify your destination directory here
+DEST_DIR="task_scripts"                         # Specify your destination directory here
 declare -a FILES_TO_COPY=(                       # Array of file paths to copy from the repository
     "file1.txt"
     "subdirectory/file2.txt"
@@ -64,7 +64,17 @@ for FILE_PATH in "${FILES_TO_COPY[@]}"; do
     # Check if the file copying was successful
     if [ $? -ne 0 ]; then
         echo "Error: Failed to copy the file '$FILE_PATH' to '$DEST_DIR'."
+        
+        # Attempt to remove the temporary directory
         rm -rf "$TEMP_DIR"  # Cleanup temporary directory on error
+
+        # Check if the temporary directory removal was successful
+        if [ $? -ne 0 ]; then
+            echo "Warning: Failed to remove temporary directory '$TEMP_DIR'. Please clean up manually."
+        else
+            echo "Temporary directory '$TEMP_DIR' removed successfully."
+        fi
+        
         exit 1
     fi
 
