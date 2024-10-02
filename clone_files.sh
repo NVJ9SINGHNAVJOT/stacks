@@ -8,8 +8,8 @@
 
 # Predefined variables
 REPO_URL="https://github.com/example/repo.git" # Specify your repository URL here
-DEST_DIR="task_scripts"                         # Specify your destination directory here
-declare -a FILES_TO_COPY=(                       # Array of file paths to copy from the repository
+DEST_DIR="task_scripts"                        # Specify your destination directory here
+declare -a FILES_TO_COPY=(                     # Array of file paths to copy from the repository
     "file1.txt"
     "subdirectory/file2.txt"
     "subdirectory/file3.txt"
