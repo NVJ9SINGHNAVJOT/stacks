@@ -1,29 +1,19 @@
 #!/bin/bash
 
-# Check if the repository URL is provided as the first argument
-if [ -z "$1" ]; then
-    echo "Usage: $0 <repository_url> <destination_path> <file_path1> [<file_path2> ... <file_pathN>]"
-    echo "Error: Repository URL not provided."
-    exit 1
-fi
+# NOTE: Set global variables for the execution of the clone_files script
+# Variables:
+# REPO_URL - URL of the repository to clone
+# DEST_DIR - Directory where files will be copied
+# FILES_TO_COPY - Array of file paths to be copied from the repository
 
-# Check if the destination directory is provided as the second argument
-if [ -z "$2" ]; then
-    echo "Usage: $0 <repository_url> <destination_path> <file_path1> [<file_path2> ... <file_pathN>]"
-    echo "Error: Destination directory not provided."
-    exit 1
-fi
-
-# Check if at least one file path is provided
-if [ $# -lt 3 ]; then
-    echo "Usage: $0 <repository_url> <destination_path> <file_path1> [<file_path2> ... <file_pathN>]"
-    echo "Error: At least one file path must be provided."
-    exit 1
-fi
-
-# Assign the provided arguments to meaningful variable names
-REPO_URL="$1"
-DEST_DIR="$2"
+# Predefined variables
+REPO_URL="https://github.com/example/repo.git" # Specify your repository URL here
+DEST_DIR="/task_scripts"                         # Specify your destination directory here
+declare -a FILES_TO_COPY=(                       # Array of file paths to copy from the repository
+    "file1.txt"
+    "subdirectory/file2.txt"
+    "subdirectory/file3.txt"
+)
 
 # Check if the destination directory exists
 if [ ! -d "$DEST_DIR" ]; then
@@ -45,20 +35,20 @@ git clone "$REPO_URL" "$TEMP_DIR" --depth 1
 
 # Check if the cloning was successful
 if [ $? -ne 0 ]; then
-    echo "Error: Failed to clone the repository."
+    echo "Error: Failed to clone the repository from '$REPO_URL'."
     rm -rf "$TEMP_DIR"  # Cleanup temporary directory on error
     exit 1
 fi
 
-# Loop through all the provided file paths (starting from the third argument)
-for FILE_PATH in "${@:3}"; do
+# Loop through all the files in the array
+for FILE_PATH in "${FILES_TO_COPY[@]}"; do
     # Construct the full destination file path
     DEST_FILE="$DEST_DIR/$(basename "$FILE_PATH")"
     
     # Check if the file exists in the destination directory
     if [ -f "$DEST_FILE" ]; then
         echo "Removing existing file at '$DEST_FILE'..."
-        rm -f "$DEST_FILE"
+        rm -f "$DEST_FILE"  # Remove existing file
         
         # Check if the deletion was successful
         if [ $? -ne 0 ]; then
@@ -73,7 +63,7 @@ for FILE_PATH in "${@:3}"; do
 
     # Check if the file copying was successful
     if [ $? -ne 0 ]; then
-        echo "Error: Failed to copy the file '$FILE_PATH'."
+        echo "Error: Failed to copy the file '$FILE_PATH' to '$DEST_DIR'."
         rm -rf "$TEMP_DIR"  # Cleanup temporary directory on error
         exit 1
     fi
