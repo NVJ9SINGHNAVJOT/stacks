@@ -38,7 +38,7 @@ manage_kafka_container() {
             -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER \
             -e KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT \
             -e ALLOW_PLAINTEXT_LISTENER=yes \
-            docker.io/bitnami/kafka:3.3.2
+            docker.io/bitnami/kafka:latest
     fi
 }
 
