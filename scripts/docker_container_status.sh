@@ -5,10 +5,15 @@ does_container_exist() {
     # Exit if no container name is given
     if [ -z "$container_name" ]; then
         echo "Error: No container name provided."
-        exit 1
+        return 1  # Return error code for missing container name
     fi
 
-    docker inspect --type container "$container_name" > /dev/null 2>&1
+    # Check if the container exists
+    if docker inspect --type container "$container_name" > /dev/null 2>&1; then
+        return 0  # Container exists
+    else
+        return 1  # Container does not exist
+    fi
 }
 
 # Function to check if the container is running
