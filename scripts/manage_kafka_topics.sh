@@ -5,27 +5,10 @@ BROKER="localhost:9092"
 TIMEOUT=30  # Maximum wait time for Kafka to be ready (in seconds)
 SLEEP_INTERVAL=2  # Time to wait between each Kafka readiness check (in seconds)
 
-# Function to check if Kafka is ready by attempting to list topics
-is_kafka_ready() {
+# Function to check if Kafka is ready and wait for it to be ready if not
+wait_for_kafka_ready() {
     local container_name="$1"
-
-    # Exit if no container name is given
-    if [ -z "$container_name" ]; then
-        echo "Error: No container name provided."
-        return 1
-    fi
-
-    # Try to list topics to verify if Kafka is responsive
-    if docker exec "$container_name" kafka-topics.sh --bootstrap-server "$BROKER" --list >/dev/null 2>&1; then
-        return 0  # Kafka is ready
-    else
-        return 1  # Kafka is not ready
-    fi
-}
-
-# Function to wait for Kafka to be ready before proceeding
-wait_for_kafka() {
-    local container_name="$1"
+    local elapsed=0
 
     # Exit if no container name is given
     if [ -z "$container_name" ]; then
@@ -33,10 +16,10 @@ wait_for_kafka() {
         exit 1
     fi
 
-    local elapsed=0
     # Wait until Kafka is ready or until the timeout is reached
     while [ "$elapsed" -lt "$TIMEOUT" ]; do
-        if is_kafka_ready "$container_name"; then
+        # Try to list topics to verify if Kafka is responsive
+        if docker exec "$container_name" kafka-topics.sh --bootstrap-server "$BROKER" --list >/dev/null 2>&1; then
             echo "Kafka is ready. Proceeding to actions..."
             return 0  # Kafka is ready
         else
