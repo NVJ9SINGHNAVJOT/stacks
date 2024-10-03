@@ -24,9 +24,9 @@ manage_kafka_container() {
         docker run -d \
             --name "$container_name" \
             --hostname "$container_name" \
-            --network "$network_name" \      # Use the specified network name
+            --network "$network_name" \
             -p 9092:9092 \
-            -v "$volume_name:/bitnami/kafka" \  # Use the unique volume name
+            -v "$volume_name:/bitnami/kafka" \
             -e KAFKA_KRAFT_CLUSTER_ID=eWr0VGANOXqQHIvQLPE5ug \
             -e KAFKA_ENABLE_KRAFT=yes \
             -e KAFKA_CFG_PROCESS_ROLES=broker,controller \
