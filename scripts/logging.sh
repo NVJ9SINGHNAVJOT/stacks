@@ -2,9 +2,9 @@
 
 # Logging functions
 
-# Function to get the current timestamp
+# Function to get the current timestamp in light black, including seconds and milliseconds (3 decimal places)
 current_time() {
-    date +"%Y-%m-%dT%H:%M:%S%z"
+    printf "\e[0;90m$(date +"%Y-%m-%dT%H:%M:%S.%3N%z")\e[0m"  # Print in light black (dark grey)
 }
 
 # Function to log information messages
@@ -22,7 +22,7 @@ war() {
     echo -e "$(current_time) \e[1;33m[WAR]\e[0m $1"  # Yellow for [WAR]
 }
 
-# Function to log logsuccess messages
+# Function to log success messages
 logsuccess() {
     echo -e "$(current_time) \e[1;32m[SUCCESS]\e[0m $1"  # Bright green for [SUCCESS]
 }

@@ -17,9 +17,9 @@ declare -a FILES_TO_COPY=(                     # Array of file paths to copy fro
 
 # Logging functions
 
-# Function to get the current timestamp
+# Function to get the current timestamp in light black, including seconds and milliseconds (3 decimal places)
 current_time() {
-    date +"%Y-%m-%dT%H:%M:%S%z"
+    printf "\e[0;90m$(date +"%Y-%m-%dT%H:%M:%S.%3N%z")\e[0m"  # Print in light black (dark grey)
 }
 
 # Function to log information messages
