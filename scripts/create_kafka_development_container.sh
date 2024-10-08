@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Source the file containing the container status functions
 source ./docker_container_status.sh
+source ./logging.sh
 
 # Check if the container name and network name are provided as arguments
 if [ -z "$1" ] || [ -z "$2" ]; then
-    echo "Usage: $0 <container_name> <network_name>"
+    logerr "Usage: $0 <container_name> <network_name>"
     exit 1
 fi
 
@@ -19,14 +19,20 @@ manage_kafka_container() {
     if does_container_exist "$container_name"; then
         # Check if the container is running
         if is_container_running "$container_name"; then
-            echo "Kafka container '$container_name' is already running."
+            loginf "Kafka container '$container_name' is already running."
         else
-            echo "Kafka container '$container_name' exists but is not running. Starting the container..."
+            loginf "Kafka container '$container_name' exists but is not running. Starting the container..."
             docker start "$container_name"
+            if [ $? -eq 0 ]; then
+                logsuccess "Kafka container '$container_name' started successfully."
+            else
+                logerr "Failed to start Kafka container '$container_name'."
+                exit 1
+            fi
         fi
     else
         # If the container doesn't exist, create and run the container
-        echo "Kafka container '$container_name' does not exist. Creating and running the container..."
+        loginf "Kafka container '$container_name' does not exist. Creating and running the container..."
         docker run -d \
             --name "$container_name" \
             --hostname "$container_name" \
@@ -45,6 +51,13 @@ manage_kafka_container() {
             -e KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT \
             -e ALLOW_PLAINTEXT_LISTENER=yes \
             docker.io/bitnami/kafka:latest
+
+        if [ $? -eq 0 ]; then
+            logsuccess "Kafka container '$container_name' created and running successfully."
+        else
+            logerr "Failed to create and run Kafka container '$container_name'."
+            exit 1
+        fi
     fi
 }
 

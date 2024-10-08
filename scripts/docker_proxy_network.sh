@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./logging.sh
+
 create_proxy_network() {
   network_name="proxy"
   
@@ -10,14 +12,15 @@ create_proxy_network() {
     network_scope=$(docker network inspect "$network_name" --format "{{.Scope}}")
     
     if [ "$network_driver" = "bridge" ] && [ "$network_scope" = "global" ]; then
-      echo "Network '$network_name' already exists and is an external bridge."
+      loginf "Network '$network_name' already exists and is an external bridge."
     else
-      echo "Network '$network_name' exists but is not an external bridge. Please verify or recreate it."
+      logerr "Network '$network_name' exists but is not an external bridge. Please verify or recreate it."
+      exit 1
     fi
   else
-    echo "Creating external bridge network '$network_name'..."
+    loginf "Creating external bridge network '$network_name'..."
     docker network create --driver bridge --scope global "$network_name"
-    echo "'$network_name' network created."
+    logsuccess "'$network_name' network created."
   fi
 }
 
