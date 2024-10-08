@@ -22,8 +22,7 @@ manage_kafka_container() {
             loginf "Kafka container '$container_name' is already running."
         else
             loginf "Kafka container '$container_name' exists but is not running. Starting the container..."
-            docker start "$container_name"
-            if [ $? -eq 0 ]; then
+            if docker start "$container_name"; then
                 logsuccess "Kafka container '$container_name' started successfully."
             else
                 logerr "Failed to start Kafka container '$container_name'."
@@ -33,7 +32,7 @@ manage_kafka_container() {
     else
         # If the container doesn't exist, create and run the container
         loginf "Kafka container '$container_name' does not exist. Creating and running the container..."
-        docker run -d \
+        if docker run -d \
             --name "$container_name" \
             --hostname "$container_name" \
             --network "$network_name" \
@@ -50,9 +49,8 @@ manage_kafka_container() {
             -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER \
             -e KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT \
             -e ALLOW_PLAINTEXT_LISTENER=yes \
-            docker.io/bitnami/kafka:latest
+            docker.io/bitnami/kafka:latest; then
 
-        if [ $? -eq 0 ]; then
             logsuccess "Kafka container '$container_name' created and running successfully."
         else
             logerr "Failed to create and run Kafka container '$container_name'."

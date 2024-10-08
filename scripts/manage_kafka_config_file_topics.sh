@@ -23,8 +23,8 @@ fi
 KAFKA_CONTAINER="$1"
 CONFIG_FILE="$2"
 ACTION="$3"
-REPLICATION_FACTOR="$4"
-NEW_PARTITIONS="$4"  # Used in case of 'increase'
+REPLICATION_FACTOR="$4"  # Used in case of 'create'
+NEW_PARTITIONS="$4"      # Used in case of 'increase'
 
 # Check if the configuration file exists
 if [ ! -f "$CONFIG_FILE" ]; then
