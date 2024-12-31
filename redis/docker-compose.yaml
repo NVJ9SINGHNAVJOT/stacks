@@ -16,5 +16,10 @@ services:
     volumes:
       - redis-stack-data:/data # Bind mount a volume for persistent data storage
     environment:
-      - REDIS_ARGS=--requirepass $REDIS_PASSWORD # Set password using environment variable
+      REDIS_ARGS: --requirepass ${REDIS_PASSWORD} # Set password using environment variable
     restart: unless-stopped # Ensure the container restarts unless manually stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
