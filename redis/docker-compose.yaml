@@ -1,8 +1,3 @@
-version: '3.8'
-
-volumes:
-  redis-stack-data:
-    name: redis-stack-data
 
 services:
   redis-stack:
@@ -26,3 +21,7 @@ services:
         limits:
           cpus: '0.5'
           memory: 128M 
+
+volumes:
+  redis-stack-data:
+    name: redis-stack-data

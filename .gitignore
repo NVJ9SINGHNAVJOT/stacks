@@ -2,3 +2,6 @@
 *.env
 *.envrc
 !example.env
+
+# service configs
+**/service.json
