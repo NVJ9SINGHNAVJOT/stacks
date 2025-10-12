@@ -10,6 +10,11 @@ services:
       - ./service.json:/etc/prometheus/service.json
     networks:
       - proxy
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
     restart: unless-stopped
 
   grafana:
@@ -24,6 +29,11 @@ services:
     depends_on:
       - prometheus
       - loki
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
     restart: unless-stopped
 
   loki:
@@ -35,6 +45,11 @@ services:
       - loki_data:/loki
     networks:
       - proxy
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
     restart: unless-stopped
 
 volumes:
